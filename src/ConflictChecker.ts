@@ -71,9 +71,34 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
                 return false;
             }
             if (satisfies(parseVersion(mi.version).version, parseRange(ml.version))) {
-                console.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} not satisfies`, [mName, ml, ccp, mi]);
-                this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} not satisfies: mod[${mName}] need mod[${mi.name}] version[${ml.version}] but find version[${mi.version}].`);
+                console.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} not satisfies version`, [mName, ml, ccp, mi]);
+                this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} not satisfies version: mod[${mName}] need mod[${mi.name}] version[${ml.version}] but find version[${mi.version}].`);
                 return false;
+            }
+            return true;
+        }
+        const getAndCheckBlack = (mName: string, ccp: ConflictCheckerParams, ml: ModLimit, k: keyof ConflictCheckerParams) => {
+            const m2I = modOrder.indexOf(ml.modName);
+            const mi = this.gSC2DataManager.getModLoader().getMod(ml.modName);
+            if (m2I < 0 || !mi) {
+                return true;
+            }
+            const m1I = modOrder.indexOf(mName);
+            if (satisfies(parseVersion(mi.version).version, parseRange(ml.version))) {
+                if (k === 'blackBefore') {
+                    if (m2I > m1I) {
+                        console.error('[ConflictChecker] ModLoaderLoadEnd() {${k}} must not satisfies order', [mName, ml, ccp, m2I, m1I]);
+                        this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} must not satisfies order: mod[${mName}] cannot load before mod[${ml.modName}] range[${ml.version}] and now find version[${mi.version}].`);
+                        return false;
+                    }
+                }
+                if (k === 'blackAfter') {
+                    if (m2I < m1I) {
+                        console.error('[ConflictChecker] ModLoaderLoadEnd() {${k}} must not satisfies order', [mName, ml, ccp, m2I, m1I]);
+                        this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} must not satisfies order: mod[${mName}] cannot load after mod[${ml.modName}] range[${ml.version}] and now find version[${mi.version}].`);
+                        return false;
+                    }
+                }
             }
             return true;
         }
@@ -103,7 +128,7 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
                 const m2I = modOrder.indexOf(ml.modName);
                 if (!(m2I < m1I)) {
                     console.error('[ConflictChecker] ModLoaderLoadEnd() mustAfter not satisfies order', [mName, ml, ccp, m2I, m1I]);
-                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() mustAfter not satisfies order: mod[${mName}] need mod[${ml.modName}] load before it.`);
+                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() mustAfter not satisfies order: mod[${mName}] need mod[${ml.modName}] load after it.`);
                 }
             }
             for (const ml of ccp.optionalBefore || []) {
@@ -123,7 +148,17 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
                 const m2I = modOrder.indexOf(ml.modName);
                 if (!(m2I < m1I)) {
                     console.error('[ConflictChecker] ModLoaderLoadEnd() optionalAfter not satisfies order', [mName, ml, ccp, m2I, m1I]);
-                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() optionalAfter not satisfies order: mod[${mName}] need mod[${ml.modName}] load before it.`);
+                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() optionalAfter not satisfies order: mod[${mName}] need mod[${ml.modName}] load after it.`);
+                }
+            }
+            for (const ml of ccp.blackBefore || []) {
+                if (!getAndCheckBlack(mName, ccp, ml, 'blackBefore')) {
+                    continue;
+                }
+            }
+            for (const ml of ccp.blackAfter || []) {
+                if (!getAndCheckBlack(mName, ccp, ml, 'blackAfter')) {
+                    continue;
                 }
             }
         }
