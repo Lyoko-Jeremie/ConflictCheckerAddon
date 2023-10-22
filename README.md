@@ -78,3 +78,20 @@ the detail logic of version judgement please see [InfiniteSemVer](https://github
 [(mustAfter) & (optionalAfter)] -> (now mod) -> [(mustBefore) & (optionalBefore)]
 
 ```
+
+---
+
+#### 初级使用
+* 如果你依赖某些mod，但是需要这些mod在你之前或之后加载，请使用 `mustBefore` 和 `mustAfter`。
+* 如果你不依赖（可选依赖）某些mod，但是如果这些mod存在，则需要这些mod在你之前或之后加载，请使用 `optionalBefore` 和 `optionalAfter`。
+* 如果你不希望某些版本的mod在你之前或之后加载，请使用 `blackBefore` 和 `blackAfter`。
+* 如果你需要在其他mod加载之后汉化、翻译其他mod，请使用 `optionalAfter` 来声明你的mod需要在其他被翻译的mod之后加载。
+* 如果你需要给其他mod打补丁，请使用 `mustAfter` 或 `optionalAfter` 来声明你的mod需要在其他mod之后加载。
+* 如果你需要在其他mod加载时修改其他mod，例如直接通过修改其他mod的zip数据来翻译这些mod或给这些mod打补丁，请使用 `mustBefore` 或 `optionalBefore` 来声明你的mod需要在其他mod之前加载。
+
+#### 中级使用
+* 如果某些mod的部分版本因为一些原因（bug或feature）和你的mod有冲突，你需要在这些mod加载后针对性地给这些mod打补丁或者检测这些mod的存在，但在其他情况下这些mod和你没关系，这时你可以使用 `blackBefore` 来指定你不能在这些mod之前加载。
+
+
+#### 高级使用（非常复杂情况下的解决方案）
+TODO
