@@ -65,7 +65,7 @@ the detail logic of version judgement please see [InfiniteSemVer](https://github
   "dependenceInfo": [
     {
       "modName": "ConflictChecker",
-      "version": "^1.0.0"
+      "version": "^1.1.0"
     }
   ]
 }
