@@ -10,6 +10,8 @@ export interface ConflictCheckerParams {
     mustAfter?: ModLimit[];
     optionalBefore?: ModLimit[];
     optionalAfter?: ModLimit[];
+    blackBefore?: ModLimit[];
+    blackAfter?: ModLimit[];
 }
 
 export function checkModLimit(ml: any): ml is ModLimit {
@@ -28,5 +30,7 @@ export function checkParams(a: any): a is ConflictCheckerParams {
         && c('mustAfter')
         && c('optionalBefore')
         && c('optionalAfter')
+        && c('blackBefore')
+        && c('blackAfter')
         ;
 }
