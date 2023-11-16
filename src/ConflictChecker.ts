@@ -72,7 +72,7 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
                 this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} not found mod[${ml.modName}] mod[${mName}]`);
                 return false;
             }
-            if (satisfies(parseVersion(mi.mod.version).version, parseRange(ml.version))) {
+            if (!satisfies(parseVersion(mi.mod.version).version, parseRange(ml.version))) {
                 console.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} not satisfies version`, [mName, ml, ccp, mi]);
                 this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} not satisfies version: mod[${mName}] need mod[${mi.name}] version[${ml.version}] but find version[${mi.mod.version}].`);
                 return false;
@@ -89,14 +89,14 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
             if (satisfies(parseVersion(mi.mod.version).version, parseRange(ml.version))) {
                 if (k === 'blackBefore') {
                     if (m2I > m1I) {
-                        console.error('[ConflictChecker] ModLoaderLoadEnd() {${k}} must not satisfies order', [mName, ml, ccp, m2I, m1I]);
+                        console.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} must not satisfies order`, [mName, ml, ccp, m2I, m1I]);
                         this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} must not satisfies order: mod[${mName}] cannot load before mod[${ml.modName}] range[${ml.version}] and now find version[${mi.mod.version}].`);
                         return false;
                     }
                 }
                 if (k === 'blackAfter') {
                     if (m2I < m1I) {
-                        console.error('[ConflictChecker] ModLoaderLoadEnd() {${k}} must not satisfies order', [mName, ml, ccp, m2I, m1I]);
+                        console.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} must not satisfies order`, [mName, ml, ccp, m2I, m1I]);
                         this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() {${k}} must not satisfies order: mod[${mName}] cannot load after mod[${ml.modName}] range[${ml.version}] and now find version[${mi.mod.version}].`);
                         return false;
                     }
