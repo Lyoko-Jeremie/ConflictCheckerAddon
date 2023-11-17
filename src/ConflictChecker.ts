@@ -120,7 +120,7 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
                 const m2I = findIndex(modOrder, T => T.name === ml.modName);
                 if (!(m2I > m1I)) {
                     console.error('[ConflictChecker] ModLoaderLoadEnd() mustBefore not satisfies order', [mName, ml, ccp, m2I, m1I]);
-                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() mustBefore not satisfies order: mod[${mName}] need mod[${ml.modName}] load before it.`);
+                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() mustBefore not satisfies order: mod[${mName}] need load before mod[${ml.modName}] .`);
                 }
             }
             for (const ml of ccp.mustAfter || []) {
@@ -130,7 +130,7 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
                 const m2I = findIndex(modOrder, T => T.name === ml.modName);
                 if (!(m2I < m1I)) {
                     console.error('[ConflictChecker] ModLoaderLoadEnd() mustAfter not satisfies order', [mName, ml, ccp, m2I, m1I]);
-                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() mustAfter not satisfies order: mod[${mName}] need mod[${ml.modName}] load after it.`);
+                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() mustAfter not satisfies order: mod[${mName}] need load after mod[${ml.modName}] .`);
                 }
             }
             for (const ml of ccp.optionalBefore || []) {
@@ -140,7 +140,7 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
                 const m2I = findIndex(modOrder, T => T.name === ml.modName);
                 if (!(m2I > m1I)) {
                     console.error('[ConflictChecker] ModLoaderLoadEnd() optionalBefore not satisfies order', [mName, ml, ccp, m2I, m1I]);
-                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() optionalBefore not satisfies order: mod[${mName}] need mod[${ml.modName}] load before it.`);
+                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() optionalBefore not satisfies order: mod[${mName}] need load before mod[${ml.modName}] .`);
                 }
             }
             for (const ml of ccp.optionalAfter || []) {
@@ -150,7 +150,7 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
                 const m2I = findIndex(modOrder, T => T.name === ml.modName);
                 if (!(m2I < m1I)) {
                     console.error('[ConflictChecker] ModLoaderLoadEnd() optionalAfter not satisfies order', [mName, ml, ccp, m2I, m1I]);
-                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() optionalAfter not satisfies order: mod[${mName}] need mod[${ml.modName}] load after it.`);
+                    this.logger.error(`[ConflictChecker] ModLoaderLoadEnd() optionalAfter not satisfies order: mod[${mName}] need load after mod[${ml.modName}] .`);
                 }
             }
             for (const ml of ccp.blackBefore || []) {
