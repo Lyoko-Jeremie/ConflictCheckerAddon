@@ -134,7 +134,7 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
                 }
             }
             for (const ml of ccp.optionalBefore || []) {
-                if (!getAndCheck(mName, ccp, ml, 'optionalBefore')) {
+                if (!getAndCheck(mName, ccp, ml, 'optionalBefore', true)) {
                     continue;
                 }
                 const m2I = findIndex(modOrder, T => T.name === ml.modName);
@@ -144,7 +144,7 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
                 }
             }
             for (const ml of ccp.optionalAfter || []) {
-                if (!getAndCheck(mName, ccp, ml, 'optionalAfter')) {
+                if (!getAndCheck(mName, ccp, ml, 'optionalAfter', true)) {
                     continue;
                 }
                 const m2I = findIndex(modOrder, T => T.name === ml.modName);
