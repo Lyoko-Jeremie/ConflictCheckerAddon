@@ -58,10 +58,11 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
         const parseVersion = this.infiniteSemVerApi.parseVersion;
         const satisfies = this.infiniteSemVerApi.satisfies;
         const modOrder = this.gSC2DataManager.getModLoader().getModCacheOneArray();
+        const modCache = this.gSC2DataManager.getModLoader().getModCacheMapWithAlias();
 
         const getAndCheck = (mName: string, ccp: ConflictCheckerParams, ml: ModLimit, k: keyof ConflictCheckerParams, optional = false) => {
             const m2I = findIndex(modOrder, T => T.name === ml.modName);
-            const mi: ModOrderItem | undefined = this.gSC2DataManager.getModLoader().getModCacheByNameOne(ml.modName);
+            const mi: ModOrderItem | undefined = this.gSC2DataManager.getModLoader().getModCacheByAliseOne(ml.modName);
             if (m2I < 0 || !mi) {
                 if (optional) {
                     console.log(`[ConflictChecker] ModLoaderLoadEnd() {${k}} not found mod`, [mName, ml, ccp]);
@@ -81,7 +82,7 @@ export class ConflictChecker implements LifeTimeCircleHook, AddonPluginHookPoint
         }
         const getAndCheckBlack = (mName: string, ccp: ConflictCheckerParams, ml: ModLimit, k: keyof ConflictCheckerParams) => {
             const m2I = findIndex(modOrder, T => T.name === ml.modName);
-            const mi: ModOrderItem | undefined = this.gSC2DataManager.getModLoader().getModCacheByNameOne(ml.modName);
+            const mi: ModOrderItem | undefined = this.gSC2DataManager.getModLoader().getModCacheByAliseOne(ml.modName);
             if (m2I < 0 || !mi) {
                 return true;
             }
